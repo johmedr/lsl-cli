@@ -55,7 +55,7 @@ def print_infos_line(infos: dict):
 
 
 
-def resolve(args): 
+def list(args): 
 	if args.all:
 		fields = STREAM_INFO_FIELDS
 	else: 
@@ -63,7 +63,7 @@ def resolve(args):
 
 	infos = pylsl.resolve_streams(float(args.timeout))
 	if len(infos) == 0:
-		sys.exit(0)
+		return 
 
 	if args.list:
 		infodict = infos_to_dict(infos)
@@ -72,6 +72,3 @@ def resolve(args):
 	else: 
 		print_infos(infos, fields)
 
-
-if __name__ == '__main__': 
-	resolve(sys.argv)

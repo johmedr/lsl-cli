@@ -1,13 +1,37 @@
 import pylsl
 import argparse
+import time 
+from datetime import datetime
+import pprint
 
 
-if __name__ == "__main__": 
-	parser = argparse.ArgumentParser(description="Print to screen messages from a stream.")
-	parser.add_argument('name', help='Stream name')
-	parser.add_argument('--timeout', dest='timeout', nargs=1, type=1)
+def echo(args): 
+	stream_name = args.name
 
-	args = args.parse_args()
+	infos = pylsl.resolve_streams(args.timeout)
+	names = [i.name() for i in infos]
 
-	pylsl.resolve_streams()
+	if stream_name not in names: 
+		print('Stream not found.')
+		return
+
+	stream_info = infos[names.index(stream_name)]
+
+	if stream_info.nominal_srate() != pylsl.IRREGULAR_RATE:
+		delay = 0.9 / stream_info.nominal_srate() 
+	else: 
+		delay = 0.1
+
+	inlet = pylsl.StreamInlet(stream_info)
+	
+	running = True
+	while running:
+		res = inlet.pull_sample(0)
+		if res[0] != None:
+			sample, timestamp = res
+			print('{time:<10} {sample}'.format(
+				time=datetime.fromtimestamp(float(timestamp)).strftime('%H:%M:%S.%f'), 
+				sample=sample))
+		time.sleep(delay)
+
 	
