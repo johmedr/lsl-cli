@@ -12,5 +12,6 @@ def show(args):
 		return
 
 	stream_info = infos[names.index(stream_name)]
+	inlet = pylsl.StreamInlet(stream_info)
 
-	print(stream_info.as_xml())
+	print(inlet.info().as_xml())

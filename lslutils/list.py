@@ -1,8 +1,6 @@
 import pylsl
-import argparse
 from datetime import datetime
 from .utils import *
-import sys
 
 
 def print_infos(infos, fields=STREAM_INFO_FIELDS): 

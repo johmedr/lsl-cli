@@ -2,6 +2,7 @@ from .utils import *
 from .list import list
 from .echo import echo
 from .show import show
+from .find import find
 import argparse
 import sys
 
@@ -31,6 +32,12 @@ def main():
 	show_parser.add_argument('--timeout', dest='timeout', type=float, default=0.05)
 
 	show_parser.set_defaults(func=show)
+
+	find_parser = subparser.add_parser('find')
+	for field in STREAM_INFO_FIELDS:
+		find_parser.add_argument(f'--{field}', dest=field, type=str, help=f"Display stream {field}")
+	find_parser.add_argument('--timeout', dest='timeout', type=float, default=0.05)
+	find_parser.set_defaults(func=find)
 
 	args = parser.parse_args()
 	if args.command is None:

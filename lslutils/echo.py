@@ -1,8 +1,6 @@
 import pylsl
-import argparse
 import time 
 from datetime import datetime
-import pprint
 
 
 def echo(args): 
@@ -26,12 +24,15 @@ def echo(args):
 	
 	running = True
 	while running:
-		res = inlet.pull_sample(0)
-		if res[0] != None:
-			sample, timestamp = res
-			print('{time:<10} {sample}'.format(
-				time=datetime.fromtimestamp(float(timestamp)).strftime('%H:%M:%S.%f'), 
-				sample=sample))
-		time.sleep(delay)
-
+		try: 
+			res = inlet.pull_sample(0)
+			if res[0] != None:
+				sample, timestamp = res
+				print('{time:<10} {sample}'.format(
+					time=datetime.fromtimestamp(float(timestamp)).strftime('%H:%M:%S.%f'), 
+					sample=sample))
+			time.sleep(delay)
+		except KeyboardInterrupt:
+			running = False
+			
 	
