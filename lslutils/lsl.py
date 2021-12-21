@@ -43,8 +43,9 @@ def main():
 	if args.command is None:
 		parser.print_help()
 	else: 
-		args.func(args)
-
+		res = args.func(args)
+		if res is False:
+			parser.print_help()
 
 if __name__ == "__main__": 
 	main(sys.argv)	

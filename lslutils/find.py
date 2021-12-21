@@ -15,6 +15,8 @@ def find(args):
 		if prop is not None:
 			props[field] = prop
 
+	if len(props) == 0: 
+		return False
 
 	infos = pylsl.resolve_streams(args.timeout)
 	
