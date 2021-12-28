@@ -3,6 +3,7 @@ from .list import list
 from .echo import echo
 from .show import show
 from .find import find
+from .stub import stub
 import argparse
 
 
@@ -61,6 +62,13 @@ def main():
 		find_parser.add_argument(f'--{field}', dest=field, type=str, help=f"Display stream {field}")
 	find_parser.add_argument('--timeout', dest='timeout', type=float, default=0.05)
 	find_parser.set_defaults(func=find)
+
+	stub_parser = subparser.add_parser('stub')
+	stub_parser.add_argument('name', help='Stream name')
+	stub_parser.add_argument('-n', '--nominal-srate', dest='nominal_srate', type=float, default=100)
+	stub_parser.add_argument('-c', '--channel-count', dest='channel_count', type=int, default=1)
+	stub_parser.add_argument('-s', '--chunk-size', dest='chunk_size', type=int, default=1)
+	stub_parser.set_defaults(func=stub)
 
 	args = parser.parse_args()
 	if args.command is None:
