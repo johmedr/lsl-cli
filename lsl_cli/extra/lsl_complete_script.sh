@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 
 DIR=$(python3 -c "import lsl_cli;print(lsl_cli.__path__[0])")
 COMP_FILE="$DIR/extra/lsl-completion"
@@ -8,7 +7,6 @@ case $# in
 	0) SH_NAME="$(basename "$SHELL")" ;; 
 	1) SH_NAME="$1" ;;
 esac
-
 
 case $SH_NAME in
 	bash)

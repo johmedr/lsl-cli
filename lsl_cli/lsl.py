@@ -14,10 +14,12 @@ def complete(args):
 	os.chdir(path)
 
 	if args.zsh:
-		_args = 'zsh'
-	else:
-		_args = 'bash'
-	subprocess.call([os.path.join(path, 'extra/lsl_complete_script.sh'), _args], env=os.environ.copy())
+		_args = ['zsh']
+	elif args.bash:
+		_args = ['bash']
+	else: 
+		_args = []
+	subprocess.call([os.path.join(path, 'extra/lsl_complete_script.sh')] + _args, env=os.environ.copy())
 	
 
 def main():
