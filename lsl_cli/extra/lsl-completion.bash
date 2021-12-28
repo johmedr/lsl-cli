@@ -1,13 +1,12 @@
 _lsl_completion()
 {
     local cur prev shell_name
-    shell_name=$(ps -p $$ | grep $$ | tr -s ' ' | cut -d ' ' -f 5)
-
-    if [[ $shell_name == "bash" ]]; then
-    	_get_comp_words_by_ref -n : cur
-    fi
 	
 	cur=${COMP_WORDS[COMP_CWORD]}
+
+	if [[ ! -n $(command -v lsl) ]]; then
+		return 0 
+	fi 
 
 	local COMMANDS=(
 		"list"
