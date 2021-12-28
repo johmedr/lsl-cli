@@ -24,9 +24,9 @@ pip show lsl-cli | grep Location
 
 Then, if you use Bash add the following line to your `~/.bashrc`: 
 ```bash 
-source path\to\lsl_cli/extra/lsl-completion.bash
+source path\to\lsl-cli/extra/lsl-completion.bash
 ```
 Alternatively if you use Zsh, you need to put in `~/.zshrc`: 
 ```bash
-source path\to\lsl_cli/extra/lsl-completion.zsh
+source path\to\lsl-cli/extra/lsl-completion.zsh
 ```
