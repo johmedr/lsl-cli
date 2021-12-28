@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
 	name="lsl-cli", 
-	version='0.0.2', 
+	version='0.1.0', 
 	description="Command-line tools for the Lab Streaming Layer.",
 	url="https://github.com/yop0/lsl-cli", 
 	author="Johan Medrano",
