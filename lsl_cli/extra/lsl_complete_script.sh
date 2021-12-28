@@ -25,6 +25,7 @@ case $SH_NAME in
          ;;
 esac
 
+echo ""
 echo "# >>> lsl_cli autocompletion >>>"
 echo "source $COMP_FILE"
 echo "# <<< lsl_cli autocompletion <<<"
