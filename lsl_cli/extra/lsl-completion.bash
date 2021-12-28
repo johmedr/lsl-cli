@@ -1,6 +1,6 @@
 _lsl_completion()
 {
-    local cur prev shell_name
+    local cur prev
 	
 	cur=${COMP_WORDS[COMP_CWORD]}
 
@@ -13,6 +13,7 @@ _lsl_completion()
 		"echo"
 		"show"
 		"find"
+		"complete"
 	)
 
 	local command i
@@ -54,6 +55,9 @@ _lsl_completion()
 				 	--created_at' -- ${cur}))
 				return 0
 				;;
+			complete)
+				COMPREPLY($(compgen -W '
+					--bash --zsh' -- ${cur} ))
 		esac
     fi
 
