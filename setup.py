@@ -18,7 +18,9 @@ setup(
 		'pylsl'
 	],
 	package_data = {
-		'': ['extra/lsl-completion.*']
+		'lsl_cli': ['extra/lsl-completion.*', 'extra/lsl_complete_script.sh']
 	}, 
-	include_package_data = True,
+	classifiers = [
+        'Development Status :: 1 - Planning',
+	]
 ) 

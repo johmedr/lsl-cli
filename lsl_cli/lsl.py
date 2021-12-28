@@ -4,12 +4,33 @@ from .echo import echo
 from .show import show
 from .find import find
 import argparse
-import sys
+
+
+
+def complete(args): 
+	import subprocess
+	import os
+	path = os.path.dirname(os.path.abspath(__file__))
+	os.chdir(path)
+
+	if args.zsh:
+		_args = 'zsh'
+	else:
+		_args = 'bash'
+	subprocess.call([os.path.join(path, 'extra/lsl_complete_script.sh'), _args], env=os.environ.copy())
+	
 
 def main():
 	parser = argparse.ArgumentParser()
 
 	subparser = parser.add_subparsers(dest='command')
+
+	complete_parser = subparser.add_parser('complete')
+	complete_parser_group = complete_parser.add_mutually_exclusive_group()
+	complete_parser_group.add_argument('--zsh', '-z', action='store_true', dest='zsh')
+	complete_parser_group.add_argument('--bash', '-b', action='store_true', dest='bash')
+
+	complete_parser.set_defaults(func=complete)
 
 	list_parser = subparser.add_parser('list')
 	list_parser.add_argument('--all', '-a', dest='all', action='store_true')
@@ -47,5 +68,5 @@ def main():
 		if res is False:
 			parser.print_help()
 
-if __name__ == "__main__": 
-	main(sys.argv)	
+
+
