@@ -16,21 +16,9 @@ pip install -e .
 
 ## Enabling autocompletion (bash/zsh users)
 The package comes with autocompletion files for Bash and Zsh.
-
-To enable autocompletion, first get the path to the 
-package sources (where you cloned the repo). If you installed with Method 1, you can get the source path using:  
-```bash
-pip show lsl-cli | grep Location
-```
-
-Then, if you use Bash add the following line to your `~/.bashrc`: 
+To enable autocompletion, use the following command to automatically source the autocompletion file (for Bash users, replace `~/.zshrc`  with `~/.bashrc`): 
 ```bash 
-source path\to\lsl-cli/extra/lsl-completion.bash
-```
-
-Alternatively if you use Zsh, you need to put in `~/.zshrc`: 
-```bash
-source path\to\lsl-cli/extra/lsl-completion.zsh
+lsl complete >> ~/.zshrc
 ```
 
 # Usage
