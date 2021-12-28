@@ -15,7 +15,8 @@ pip install -e .
 ```
 
 ## Enabling autocompletion (bash/zsh users)
-The package comes with autocompletion files for Bash and Zsh. 
+The package comes with autocompletion files for Bash and Zsh.
+
 To enable autocompletion, first get the path to the 
 package sources (where you cloned the repo). If you installed with Method 1, you can get the source path using:  
 ```bash
@@ -26,7 +27,17 @@ Then, if you use Bash add the following line to your `~/.bashrc`:
 ```bash 
 source path\to\lsl-cli/extra/lsl-completion.bash
 ```
+
 Alternatively if you use Zsh, you need to put in `~/.zshrc`: 
 ```bash
 source path\to\lsl-cli/extra/lsl-completion.zsh
+```
+
+# Usage
+
+```
+$> lsl list                # List available stream outlets
+$> lsl show {outlet}       # Show outlet data (in XML format)
+$> lsl echo {outlet}       # Continuously print received data
+$> lsl find                # Use options to specify outlet properties (e.g. --name, --channel_count, ...)
 ```
