@@ -7,7 +7,7 @@ long_description = (this_dir / "README.md").read_text()
 
 setup(
 	name="lsl-cli", 
-	version='0.1.1', 
+	version='0.1.0', 
 	description="Command-line tools for the Lab Streaming Layer.",
 	url="https://github.com/yop0/lsl-cli", 
 	author="Johan Medrano",
