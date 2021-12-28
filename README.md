@@ -11,18 +11,17 @@ pip install lsl-cli
 ```bash
 git clone https://github.com/yop0/lsl-cli.git
 cd lsl-cli
-pip install -e .
+pip install .
 ```
 
 ## Enabling autocompletion (bash/zsh users)
 The package comes with autocompletion files for Bash and Zsh.
 To enable autocompletion, use the following command to automatically source the autocompletion file (for Bash users, replace `~/.zshrc`  with `~/.bashrc`): 
-```bash 
+```
 lsl complete >> ~/.zshrc
 ```
 
 # Usage
-
 ```
 $> lsl list                # List available stream outlets
 $> lsl show {outlet}       # Show outlet data (in XML format)
