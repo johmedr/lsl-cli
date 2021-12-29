@@ -4,6 +4,7 @@ from .echo import echo
 from .show import show
 from .find import find
 from .stub import stub
+from .rate import rate
 import argparse
 
 
@@ -65,10 +66,15 @@ def main():
 
 	stub_parser = subparser.add_parser('stub')
 	stub_parser.add_argument('name', help='Stream name')
-	stub_parser.add_argument('-n', '--nominal-srate', dest='nominal_srate', type=float, default=100)
-	stub_parser.add_argument('-c', '--channel-count', dest='channel_count', type=int, default=1)
-	stub_parser.add_argument('-s', '--chunk-size', dest='chunk_size', type=int, default=1)
+	stub_parser.add_argument('-n', '--nominal_srate', dest='nominal_srate', type=float, default=100)
+	stub_parser.add_argument('-c', '--channel_count', dest='channel_count', type=int, default=1)
+	stub_parser.add_argument('-s', '--chunk_size', dest='chunk_size', type=int, default=1)
 	stub_parser.set_defaults(func=stub)
+
+	rate_parser = subparser.add_parser('rate')
+	rate_parser.add_argument('name', help='Stream name')
+	rate_parser.add_argument('-n', '--count', dest="count", type=int, default=50)
+	rate_parser.set_defaults(func=rate)
 
 	args = parser.parse_args()
 	if args.command is None:

@@ -2,8 +2,9 @@ import pylsl
 import time
 import numpy as np
 import threading
-import sys
 import signal
+import os
+from .utils import suppress_stdout_stderr, print_infos
 
 
 def stub(args):
@@ -12,23 +13,36 @@ def stub(args):
     rate = args.nominal_srate
     chunk_size = args.chunk_size
 
-    info = pylsl.StreamInfo(name=name, channel_count=channel_count, nominal_srate=rate)
-    outlet = pylsl.StreamOutlet(info)
+    info = pylsl.StreamInfo(name=name, source_id=f'stub-{os.getpid()}', channel_count=channel_count, nominal_srate=rate)
+    
+    with suppress_stdout_stderr():
+        outlet = pylsl.StreamOutlet(info)
+
+    print("Started stub ", end="")
+    print_infos([info])
 
     exit_event = threading.Event()
+
+    if rate > 0:
+        delay = 1./rate
 
 
     def signal_handler(signum, frame):
         exit_event.set()
 
     def send_data(): 
+        data = np.random.randn(chunk_size, channel_count).tolist()
+        tstamp = time.perf_counter()
         while not exit_event.is_set():
-            data = np.random.randn(chunk_size, channel_count).tolist()
             outlet.push_chunk(data)
+            data = np.random.randn(chunk_size, channel_count).tolist()
+
             if rate > 0:
-                time.sleep(1./rate)
+                tstamp = tstamp + delay
+                time.sleep(tstamp - time.perf_counter())
             elif rate == pylsl.IRREGULAR_RATE:
-                time.sleep(np.random.uniform(0.1, 1))    
+                time.sleep(np.random.uniform(0.1, 1))   
+                tstamp = time.perf_counter() 
 
     signal.signal(signal.SIGINT, signal_handler)
     thread = threading.Thread(target=send_data)

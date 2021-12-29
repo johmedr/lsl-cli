@@ -1,5 +1,5 @@
 import pylsl
-
+from .utils import suppress_stdout_stderr
 
 def show(args):
 	stream_name = args.name
@@ -12,6 +12,7 @@ def show(args):
 		return
 
 	stream_info = infos[names.index(stream_name)]
-	inlet = pylsl.StreamInlet(stream_info)
+	with suppress_stdout_stderr():
+		inlet = pylsl.StreamInlet(stream_info)
 
 	print(inlet.info().as_xml())

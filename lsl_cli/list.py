@@ -3,17 +3,6 @@ from datetime import datetime
 from .utils import *
 
 
-def print_infos(infos, fields=STREAM_INFO_FIELDS): 
-	fields = {fields} if isinstance(fields, str) else fields
-
-	for field in fields:
-		if field not in STREAM_INFO_FIELDS:
-			raise ValueError(f"Unkown field: {field}")
-
-	for info in infos: 
-		print(info.name())
-		for field in fields:
-			print(f'  {field}: {getattr(info, field)()}')
 
 
 INFO_LINE_FIELDS = [

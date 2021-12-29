@@ -14,6 +14,8 @@ _lsl_completion()
 		"show"
 		"find"
 		"complete"
+		"stub"
+		"rate"
 	)
 
 	local command i
@@ -56,14 +58,23 @@ _lsl_completion()
 				return 0
 				;;
 			complete)
-				COMPREPLY($(compgen -W '
+				COMPREPLY=($(compgen -W '
 					--bash --zsh' -- ${cur} ))
+				;;
+			stub)
+				COMPREPLY=($(compgen -W '
+					--channel_count --nominal_srate 
+					--chunk_size' -- ${cur}))
+				;;
+			rate) 
+				COMPREPLY=($(compgen -W '
+					--count' -- ${cur}))
 		esac
     fi
 
     if [[ -n $command ]]; then
     	case $command in 
-    		echo|show)
+    		echo|show|rate)
 				COMPREPLY=( $( compgen -W "$( lsl list | xargs echo )" -- ${cur} ) )
 		esac
 	fi
