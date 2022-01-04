@@ -7,6 +7,7 @@ from .stub import stub
 from .rate import rate
 import argparse
 
+DEFAULT_TIMEOUT = 0.2 # 200ms should be enough for most applications
 
 
 def complete(args): 
@@ -39,7 +40,7 @@ def main():
 	list_parser = subparser.add_parser('list')
 	list_parser.add_argument('--all', '-a', dest='all', action='store_true')
 	list_parser.add_argument('--list', '-l', dest='list', action='store_true')
-	list_parser.add_argument('--timeout', dest='timeout', type=float, default=0.05)
+	list_parser.add_argument('-t', '--timeout', dest='timeout', type=float, default=DEFAULT_TIMEOUT)
 
 	for field in STREAM_INFO_FIELDS:
 		list_parser.add_argument(f'--{field}', dest=field, action='store_true', help=f"Display stream {field}")
@@ -48,20 +49,20 @@ def main():
 
 	echo_parser = subparser.add_parser('echo', description="Print to screen messages from a stream.")
 	echo_parser.add_argument('name', help='Stream name')
-	echo_parser.add_argument('--timeout', dest='timeout', type=float, default=0.05)
+	echo_parser.add_argument('-t', '--timeout', dest='timeout', type=float, default=DEFAULT_TIMEOUT)
 
 	echo_parser.set_defaults(func=echo)
 
 	show_parser = subparser.add_parser('show')
 	show_parser.add_argument('name', help='Stream name')
-	show_parser.add_argument('--timeout', dest='timeout', type=float, default=0.05)
+	show_parser.add_argument('-t', '--timeout', dest='timeout', type=float, default=DEFAULT_TIMEOUT)
 
 	show_parser.set_defaults(func=show)
 
 	find_parser = subparser.add_parser('find')
 	for field in STREAM_INFO_FIELDS:
 		find_parser.add_argument(f'--{field}', dest=field, type=str, help=f"Display stream {field}")
-	find_parser.add_argument('--timeout', dest='timeout', type=float, default=0.05)
+	find_parser.add_argument('-t', '--timeout', dest='timeout', type=float, default=DEFAULT_TIMEOUT)
 	find_parser.set_defaults(func=find)
 
 	stub_parser = subparser.add_parser('stub')
@@ -74,6 +75,7 @@ def main():
 	rate_parser = subparser.add_parser('rate')
 	rate_parser.add_argument('name', help='Stream name')
 	rate_parser.add_argument('-n', '--count', dest="count", type=int, default=50)
+	find_parser.add_argument('-t', '--timeout', dest='timeout', type=float, default=DEFAULT_TIMEOUT)
 	rate_parser.set_defaults(func=rate)
 
 	args = parser.parse_args()

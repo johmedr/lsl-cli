@@ -9,7 +9,7 @@ def rate(args):
 
 
     with suppress_stdout_stderr():
-        infos = pylsl.resolve_byprop("name", name, timeout=0)
+        infos = pylsl.resolve_byprop("name", name, timeout=args.timeout)
     
     if len(infos) == 0:
         print("Cannot find outlet.")
