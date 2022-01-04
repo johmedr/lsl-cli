@@ -13,9 +13,8 @@ def stub(args):
     rate = args.nominal_srate
     chunk_size = args.chunk_size
 
-    info = pylsl.StreamInfo(name=name, source_id=f'stub-{os.getpid()}', channel_count=channel_count, nominal_srate=rate)
-    
     with suppress_stdout_stderr():
+        info = pylsl.StreamInfo(name=name, source_id=f'stub-{os.getpid()}', channel_count=channel_count, nominal_srate=rate)
         outlet = pylsl.StreamOutlet(info)
 
     print("Started stub ", end="")

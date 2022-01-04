@@ -1,5 +1,5 @@
 import pylsl
-from .utils import STREAM_INFO_FIELDS, infos_to_dict
+from .utils import STREAM_INFO_FIELDS, infos_to_dict, suppress_stdout_stderr
 from .list import print_infos_line
 
 
@@ -17,8 +17,9 @@ def find(args):
 
 	if len(props) == 0: 
 		return False
-
-	infos = pylsl.resolve_streams(args.timeout)
+	
+	with suppress_stdout_stderr():
+		infos = pylsl.resolve_streams(args.timeout)
 	
 	found = []
 	for info in infos:

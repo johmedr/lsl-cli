@@ -48,7 +48,8 @@ def list(args):
 	else: 
 		fields = [f for f in STREAM_INFO_FIELDS if getattr(args, f)]
 
-	infos = pylsl.resolve_streams(float(args.timeout))
+	with suppress_stdout_stderr():
+		infos = pylsl.resolve_streams(float(args.timeout))
 	if len(infos) == 0:
 		return 
 
