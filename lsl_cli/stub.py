@@ -40,7 +40,7 @@ def stub(args):
                 tstamp = tstamp + delay 
                 tsleep = tstamp - time.perf_counter()
                 if tsleep > 0:
-                    time.sleep(tstamp)
+                    time.sleep(tsleep)
             elif rate == pylsl.IRREGULAR_RATE:
                 time.sleep(np.random.uniform(0.1, 1))   
                 tstamp = time.perf_counter() 
