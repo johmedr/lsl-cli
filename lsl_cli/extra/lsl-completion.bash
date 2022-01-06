@@ -16,6 +16,7 @@ _lsl_completion()
 		"complete"
 		"stub"
 		"rate"
+		"delay"
 	)
 
 	local command i
