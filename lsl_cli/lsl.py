@@ -5,6 +5,7 @@ from .show import show
 from .find import find
 from .stub import stub
 from .rate import rate
+from .delay import delay
 import argparse
 
 DEFAULT_TIMEOUT = 0.2 # 200ms should be enough for most applications
@@ -77,6 +78,12 @@ def main():
 	rate_parser.add_argument('-n', '--count', dest="count", type=int, default=50)
 	rate_parser.add_argument('-t', '--timeout', dest='timeout', type=float, default=DEFAULT_TIMEOUT)
 	rate_parser.set_defaults(func=rate)
+
+	delay_parser = subparser.add_parser('delay')
+	delay_parser.add_argument('name', help='Stream name')
+	delay_parser.add_argument('-n', '--count', dest="count", type=int, default=50)
+	delay_parser.add_argument('-t', '--timeout', dest='timeout', type=float, default=DEFAULT_TIMEOUT)
+	delay_parser.set_defaults(func=delay)
 
 	args = parser.parse_args()
 	if args.command is None:

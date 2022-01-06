@@ -68,13 +68,18 @@ _lsl_completion()
 				;;
 			rate) 
 				COMPREPLY=($(compgen -W '
-					--count' -- ${cur}))
+					--count --timeout' -- ${cur}))
+				;;
+			delay) 
+				COMPREPLY=($(compgen -W '
+					--count --timeout' -- ${cur}))
+				;;
 		esac
     fi
 
     if [[ -n $command ]]; then
     	case $command in 
-    		echo|show|rate)
+    		echo|show|rate|delay)
 				COMPREPLY=( $( compgen -W "$( lsl list | xargs echo )" -- ${cur} ) )
 		esac
 	fi
