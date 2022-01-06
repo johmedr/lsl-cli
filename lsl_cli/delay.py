@@ -49,8 +49,6 @@ def delay(args):
                     delays = delays[-MAX_BUFFER_SIZE:]
 
                 if count == -1:
-                    print(delays)
-                    print(datetime.utcfromtimestamp(np.mean(delays)).strftime('%H:%M:%S.%f'))
                     print(f"Timestamp delay: %s" % 
                         datetime.utcfromtimestamp(np.mean(delays)).strftime('%H:%M:%S.%f'), 
                         end="\r"
