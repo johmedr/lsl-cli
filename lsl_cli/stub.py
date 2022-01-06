@@ -37,8 +37,10 @@ def stub(args):
             data = np.random.randn(chunk_size, channel_count).tolist()
 
             if rate > 0:
-                tstamp = tstamp + delay
-                time.sleep(tstamp - time.perf_counter())
+                tstamp = tstamp + delay 
+                tsleep = tstamp - time.perf_counter()
+                if tsleep > 0:
+                    time.sleep(tstamp)
             elif rate == pylsl.IRREGULAR_RATE:
                 time.sleep(np.random.uniform(0.1, 1))   
                 tstamp = time.perf_counter() 
