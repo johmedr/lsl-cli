@@ -3,6 +3,7 @@ _lsl_completion()
     local cur prev
 	
 	cur=${COMP_WORDS[COMP_CWORD]}
+	prev=${COMP_WORDS[COMP_CWORD-1]}
 
 	if [[ ! -n $(command -v lsl) ]]; then
 		return 0 
@@ -17,6 +18,7 @@ _lsl_completion()
 		"stub"
 		"rate"
 		"delay"
+		"xdf"
 	)
 
 	local command i
@@ -26,6 +28,21 @@ _lsl_completion()
             break
         fi
     done
+
+    local subcommand j SUBCOMMANDS
+    if [[ "$command" == "xdf" ]]; then
+		SUBCOMMANDS=(
+    		"rate"
+    		"info"
+    		"play"
+    	)
+    	for (( j=$i+1; j < $COMP_CWORD; j++ )); do
+    		if [[ ${COMMANDS[@]} =~ ${COMP_WORDS[i]} ]]; then
+    			subcommand=${COMP_WORDS[j]}
+    			break
+    		fi
+    	done
+    fi
 
     if [[ "$cur" == -* ]]; then
     	case $command in
@@ -82,6 +99,14 @@ _lsl_completion()
     	case $command in 
     		echo|show|rate|delay)
 				COMPREPLY=( $( compgen -W "$( lsl list | xargs echo )" -- ${cur} ) )
+				;;
+			xdf)
+				if [[ -n $subcommand ]]; then
+					COMPREPLY=($(compgen -f -X '!*.xdf' -- ${cur}; compgen -o nospace -d -S / -- ${cur} ))
+				else
+					COMPREPLY=( $( compgen -W "$(echo ${SUBCOMMANDS[@]})" -- ${cur} ) )
+				fi
+				;;
 		esac
 	fi
 
