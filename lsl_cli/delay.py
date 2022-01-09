@@ -4,14 +4,17 @@ import time
 from datetime import datetime
 from .utils import suppress_stdout_stderr
 
-MAX_BUFFER_SIZE = 100_000
+MAX_BUFFER_SIZE = 20_000
+
+
 
 def delay(args): 
     name = args.name
-    if args.count != -1:
-        count = max(args.count, 5)
-    else:
+
+    if args.continuous: 
         count = -1
+    else:
+        count = max(args.number, 5)
 
     with suppress_stdout_stderr():
         infos = pylsl.resolve_byprop("name", name, timeout=args.timeout)
@@ -30,7 +33,7 @@ def delay(args):
         inlet = pylsl.StreamInlet(info)
 
     delays = []
-
+    sleep_time = 0.5/rate
 
     while len(delays) < count or count == -1:
         try:            
@@ -38,7 +41,7 @@ def delay(args):
             if res[0] is None:
                 continue
             else: 
-                tnow = time.time()
+                tnow = datetime.now().timestamp()
                 tstamp = res[1]
 
                 delay = tnow - tstamp
@@ -49,12 +52,13 @@ def delay(args):
                     delays = delays[-MAX_BUFFER_SIZE:]
 
                 if count == -1:
-                    print(f"Timestamp delay: %s" % 
-                        datetime.utcfromtimestamp(np.mean(delays)).strftime('%H:%M:%S.%f'), 
+                    print(f"Timestamp delay: {np.mean(delays) * 1e3:.3f}ms", 
                         end="\r"
                     )
+
+                time.sleep(sleep_time)
 
         except KeyboardInterrupt:
             break
 
-    print(f"Timestamp delay: %s" % datetime.utcfromtimestamp(np.mean(delays)).strftime('%H:%M:%S.%f'))
+    print(f"Timestamp delay: {np.mean(delays) * 1e3:.3f}ms")

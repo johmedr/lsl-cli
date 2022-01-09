@@ -25,13 +25,13 @@ def stub(args):
     if rate > 0:
         delay = 1./rate
 
-
     def signal_handler(signum, frame):
         exit_event.set()
 
     def send_data(): 
         data = np.random.randn(chunk_size, channel_count).tolist()
         tstamp = time.perf_counter()
+
         while not exit_event.is_set():
             outlet.push_chunk(data)
             data = np.random.randn(chunk_size, channel_count).tolist()
@@ -41,6 +41,7 @@ def stub(args):
                 tsleep = tstamp - time.perf_counter()
                 if tsleep > 0:
                     time.sleep(tsleep)
+
             elif rate == pylsl.IRREGULAR_RATE:
                 time.sleep(np.random.uniform(0.1, 1))   
                 tstamp = time.perf_counter() 

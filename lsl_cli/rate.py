@@ -3,14 +3,15 @@ import numpy as np
 import time
 from .utils import suppress_stdout_stderr
 
-MAX_BUFFER_SIZE = 100_000
+MAX_BUFFER_SIZE = 20_000
 
 def rate(args): 
     name = args.name
-    if args.count != -1:
-        count = max(args.count, 5)
-    else:
+
+    if args.continuous: 
         count = -1
+    else:
+        count = max(args.number, 5)
 
     with suppress_stdout_stderr():
         infos = pylsl.resolve_byprop("name", name, timeout=args.timeout)
@@ -29,44 +30,44 @@ def rate(args):
         inlet = pylsl.StreamInlet(info)
 
 
-    tstamp_ivals = []
-    time_ivals = []
-    last_tstamp = None
-    last_tnow = None
-    # i = 0
+    times = []
+    timestamps = []
+
+    sleep_time = 0.5/rate
 
 
-    while len(tstamp_ivals) < count or count == -1:
+    while len(times) < count or count == -1:
         try:
-            res = inlet.pull_sample(0)
+            res = inlet.pull_chunk(0)
+
             if res[0] is None:
                 continue
             else: 
-                tnow = time.perf_counter()
-                tstamp = res[1]
-                if last_tstamp is None: 
-                    last_tstamp = tstamp
-                    last_tnow = tnow
-                else: 
-                    tstamp_ivals.append(tstamp - last_tstamp)
-                    last_tstamp = tstamp
+                timestamps.extend(res[1])
+                times.append(time.perf_counter())
 
-                    time_ivals.append(tnow - last_tnow)
-                    last_tnow = tnow
+                if len(times) > MAX_BUFFER_SIZE:
+                    times = times[-MAX_BUFFER_SIZE:]
 
-                    if len(tstamp_ivals) > MAX_BUFFER_SIZE:
-                        tstamp_ivals = tstamp_ivals[-MAX_BUFFER_SIZE:]
-                    if len(tstamp_ivals) > MAX_BUFFER_SIZE:
-                        time_ivals = time_ivals[-MAX_BUFFER_SIZE:]
+                if len(timestamps) > MAX_BUFFER_SIZE:
+                    timestamps = timestamps[-MAX_BUFFER_SIZE:]
 
-                    if count == -1:
-                        arrival_rate = 1./np.mean(time_ivals)
-                        tstamp_rate = 1. / np.mean(tstamp_ivals)
-                        print(f"Timestamp rate:  {tstamp_rate:.3f}Hz - Arrival rate: {arrival_rate:.3f}Hz", end="\r")
+                if count == -1 and len(timestamps) > 1 and len(times) > 1:
+                    times_ = np.asarray(times)
+                    timestamps_ = np.asarray(timestamps)
+
+                    arrival_rate = 1./np.mean(times_[1:] - times_[:-1])
+                    tstamp_rate = 1. / np.mean(timestamps_[1:] - timestamps_[:-1])
+                    print(f"Timestamp rate:  {tstamp_rate:.3f}Hz - Arrival rate: {arrival_rate:.3f}Hz", end="\r")
+
+            time.sleep(sleep_time)
 
         except KeyboardInterrupt:
             break
 
-    arrival_rate = 1./np.mean(time_ivals)
-    tstamp_rate = 1. / np.mean(tstamp_ivals)
+    times_ = np.asarray(times)
+    timestamps_ = np.asarray(timestamps)
+
+    arrival_rate = 1./np.mean(times_[1:] - times_[:-1])
+    tstamp_rate = 1. / np.mean(timestamps_[1:] - timestamps_[:-1])
     print(f"Timestamp rate:  {tstamp_rate:.3f}Hz - Arrival rate: {arrival_rate:.3f}Hz")
