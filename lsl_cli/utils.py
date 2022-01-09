@@ -15,6 +15,7 @@ STREAM_INFO_FIELDS = (
 
 def print_infos(infos, fields=STREAM_INFO_FIELDS): 
     fields = {fields} if isinstance(fields, str) else fields
+    infos = [infos] if not hasattr(infos, '__iter__') else infos 
 
     for field in fields:
         if field not in STREAM_INFO_FIELDS:

@@ -7,7 +7,7 @@ long_description = (this_dir / "README.md").read_text()
 
 setup(
 	name="lsl-cli", 
-	version='0.1.2dev1', 
+	version='0.1.3', 
 	description="Command-line tools for the Lab Streaming Layer.",
 	url="https://github.com/yop0/lsl-cli", 
 	author="Johan Medrano",
@@ -22,7 +22,7 @@ setup(
 	}, 
 	packages=['lsl_cli'],
 	install_requires = [
-		'pylsl'
+		'pylsl', 'pyxdf'
 	],
 	package_data = {
 		'lsl_cli': ['extra/lsl-completion.*', 'extra/lsl_complete_script.sh']

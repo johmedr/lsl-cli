@@ -6,6 +6,7 @@ from .find import find
 from .stub import stub
 from .rate import rate
 from .delay import delay
+from .xdf import xdf_info, xdf_play, xdf_rate
 import argparse
 
 DEFAULT_TIMEOUT = 0.2 # 200ms should be enough for most applications
@@ -86,6 +87,24 @@ def main():
 	delay_parser.add_argument('-n', '--number', dest="number", type=int, default=50)
 	delay_parser.add_argument('-t', '--timeout', dest='timeout', type=float, default=DEFAULT_TIMEOUT)
 	delay_parser.set_defaults(func=delay)
+
+	xdf_parser = subparser.add_parser('xdf')
+	xdf_parser.set_defaults(func=lambda _: xdf_parser.print_help())
+
+	xdf_subparser = xdf_parser.add_subparsers(dest='xdf_command')
+	
+	xdf_info_parser = xdf_subparser.add_parser('info')
+	xdf_info_parser.add_argument('file', type=str)
+	xdf_info_parser.set_defaults(func=xdf_info)
+
+	xdf_play_parser = xdf_subparser.add_parser('play')
+	xdf_play_parser.add_argument('file', type=str)
+	xdf_play_parser.add_argument('-l', '--loop', action='store_true')
+	xdf_play_parser.set_defaults(func=xdf_play)
+
+	xdf_rate_parser = xdf_subparser.add_parser('rate')
+	xdf_rate_parser.add_argument('file', type=str)
+	xdf_rate_parser.set_defaults(func=xdf_rate)
 
 	args = parser.parse_args()
 	if args.command is None:
