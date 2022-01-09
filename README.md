@@ -27,4 +27,10 @@ $> lsl list                # List available stream outlets
 $> lsl show {outlet}       # Show outlet data (in XML format)
 $> lsl echo {outlet}       # Continuously print received data
 $> lsl find                # Use options to specify outlet properties (e.g. --name, --channel_count, ...)
+$> lsl stub {name}         # Create a stub outlet streaming random data
+$> lsl rate {outlet}       # Evaluate timestamps and arrival rate of an outlet
+$> lsl delay {outlet}      # Evaluate the average delay of timestamps
+$> lsl xdf info {file}     # Show infos of recorded streams
+$> lsl xdf rate {file}     # Show nominal and effective rate of recorded streams
+$> lsl xdf play {file}     # Plays the recorded file on LSL  
 ```
